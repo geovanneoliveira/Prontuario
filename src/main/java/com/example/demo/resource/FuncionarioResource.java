@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,5 +66,20 @@ public class FuncionarioResource {
 			return ResponseEntity.badRequest().body(funcionario);
 		}
 		
+	}
+	
+	@PutMapping("/update/{id}")
+	public ResponseEntity<Funcionario> update(@RequestBody Funcionario funcionario, @PathVariable long id) {
+
+		Optional<Funcionario> funcionarioOptional = funcionarioRepository.findById(id);
+
+		if (!funcionarioOptional.isPresent())
+			return ResponseEntity.notFound().build();
+
+		funcionario.setId(id);
+		
+		funcionarioRepository.save(funcionario);
+
+		return ResponseEntity.noContent().build();
 	}
 }
