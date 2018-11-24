@@ -34,8 +34,13 @@ public class FuncionarioResource {
 	}
 	
 	@GetMapping("/show/{id}")
-	public Optional<Funcionario> show(@PathVariable Long id) {
-		return funcionarioRepository.findById(id);
+	public ResponseEntity<Funcionario> show(@PathVariable Long id) {
+		Optional<Funcionario> funcionario =  funcionarioRepository.findById(id);
+		
+		if(!funcionario.isPresent()) return ResponseEntity.notFound().build();
+		
+		return ResponseEntity.ok(funcionario.get());
+
 	}
 	
 	@PostMapping("/store")

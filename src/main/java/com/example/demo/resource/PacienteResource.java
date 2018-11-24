@@ -23,7 +23,7 @@ import com.example.demo.repository.PacienteRepository;
 
 @RestController
 @RequestMapping("/paciente")
-public class PacienteResourrce {
+public class PacienteResource {
 
 	@Autowired
 	private PacienteRepository pacienteRepository;
@@ -34,8 +34,13 @@ public class PacienteResourrce {
 	}
 	
 	@GetMapping("/show/{id}")
-	public Optional<Paciente> show(@PathVariable Long id){
-		return pacienteRepository.findById(id);
+	public ResponseEntity<Paciente> show(@PathVariable Long id){
+		Optional<Paciente> paciente =  pacienteRepository.findById(id);
+		
+		if(!paciente.isPresent()) return ResponseEntity.notFound().build();
+		
+		return ResponseEntity.ok(paciente.get());
+		
 	}
 	
 	@PostMapping("/store")
@@ -45,7 +50,7 @@ public class PacienteResourrce {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}").buildAndExpand(pacienteSalvo.getId()).toUri();
 		response.setHeader("Location", uri.toASCIIString());
 		
-		return ResponseEntity.created(uri).body(pacientesalvo);
+		return ResponseEntity.created(uri).body(pacienteSalvo);
 	}
 	
 	@DeleteMapping("/delete/{id}")
