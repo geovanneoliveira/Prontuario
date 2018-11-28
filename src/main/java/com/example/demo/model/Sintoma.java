@@ -1,14 +1,17 @@
 package com.example.demo.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,12 +25,16 @@ public class Sintoma implements Serializable{
 	@Column(name = "id")
 	private long id;
 	
-	@Column(name = "descricao")
-	private String descricao;
+	@Column(name = "sintoma")
+	private String sintoma;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_prontuario")
-	private Prontuario prontuario;
+	@ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+            },
+            mappedBy = "sintomas")
+    private Set<Prontuario> prontuarios = new HashSet<>();
 
 	public long getId() {
 		return id;
@@ -37,21 +44,22 @@ public class Sintoma implements Serializable{
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getSintoma() {
+		return sintoma;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setSintoma(String sintoma) {
+		this.sintoma = sintoma;
 	}
 
-	public Prontuario getProntuario() {
-		return prontuario;
+	public Set<Prontuario> getProntuarios() {
+		return prontuarios;
 	}
 
-	public void setProntuario(Prontuario prontuario) {
-		this.prontuario = prontuario;
+	public void setProntuarios(Set<Prontuario> prontuarios) {
+		this.prontuarios = prontuarios;
 	}
+
 	
 	
 	

@@ -2,16 +2,19 @@ package com.example.demo.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -40,16 +43,23 @@ public class Prontuario implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "id_paciente")
 	private Paciente paciente;
+		
+	/**
+	 * commented into many to many annotation
+	 *  
+	 *  cascade = {
+	 *              CascadeType.PERSIST,
+	 *              CascadeType.MERGE
+	 *           }
+	 * 
+	 * **/
+	 @ManyToMany(fetch = FetchType.LAZY)
+	    @JoinTable(name = "prontuario_sintoma",
+	            joinColumns = { @JoinColumn(name = "id_prontuario") },
+	            inverseJoinColumns = { @JoinColumn(name = "id_sintoma") })
+	    private Set<Sintoma> sintomas = new HashSet<>();
+	 
 	
-	@OneToMany(mappedBy = "prontuario")
-	private List<Sintoma> sintomas;
-	
-	public List<Sintoma> getSintomas() {
-		return sintomas;
-	}
-	public void setSintomas(List<Sintoma> sintomas) {
-		this.sintomas = sintomas;
-	}
 	public Long getId() {
 		return id;
 	}
@@ -104,4 +114,11 @@ public class Prontuario implements Serializable {
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
+	public Set<Sintoma> getSintomas() {
+		return sintomas;
+	}
+	public void setSintomas(Set<Sintoma> sintomas) {
+		this.sintomas = sintomas;
+	}
+	
 }
