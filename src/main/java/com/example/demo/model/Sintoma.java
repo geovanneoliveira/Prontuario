@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="sintoma")
 public class Sintoma implements Serializable{
@@ -37,6 +39,7 @@ public class Sintoma implements Serializable{
                 CascadeType.MERGE
             },
             mappedBy = "sintomas")
+	@JsonIgnore
     private Set<Prontuario> prontuarios = new HashSet<>();
 
 	public long getId() {

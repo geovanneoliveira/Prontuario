@@ -4,11 +4,13 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Prontuario;
 import com.example.demo.model.Sintoma;
 import com.example.demo.repository.SintomaRepository;
 
+@Service
 public class SintomaService {
 	
 	@Autowired
@@ -21,14 +23,14 @@ public class SintomaService {
 		
 		for(Sintoma sintoma : sintomasBanco) {
 			for(Sintoma sintomaCorrente : prontuario.getSintomas()) {
-				if(sintomaCorrente.getSintoma().equalsIgnoreCase(sintoma.getSintoma())) {
+				if(sintomaCorrente.getId() == sintoma.getId()) {
 					sintomas.add(sintoma);
 				}
 			}
 		}
 		
 		prontuario.setSintomas(sintomas);
-		
+				
 		return prontuario;
 	}
 
