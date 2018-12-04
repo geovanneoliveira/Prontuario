@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.demo.model.Prontuario;
 import com.example.demo.repository.ProntuarioRepository;
+import com.example.demo.service.SintomaService;
 
 @RestController
 @RequestMapping("/prontuario")
@@ -28,6 +29,8 @@ public class ProntuarioResource {
 	
 	@Autowired
 	private ProntuarioRepository prontuarioRepository;
+	@Autowired
+	private SintomaService sintomaService;
 	
 	@GetMapping
 	public List<Prontuario> listar(){
@@ -45,6 +48,10 @@ public class ProntuarioResource {
 	
 	@PostMapping("/store")
 	public ResponseEntity<Prontuario> salvar(@Valid @RequestBody Prontuario prontuario, HttpServletResponse response){
+		
+		if(!prontuario.getSintomas().isEmpty()) {
+			sintomaService.configurarSugestoes(prontuario);
+		}
 	
 		Prontuario prontuarioSalvar = prontuarioRepository.save(prontuario);
 		

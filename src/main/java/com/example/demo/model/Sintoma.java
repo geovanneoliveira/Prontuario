@@ -28,6 +28,9 @@ public class Sintoma implements Serializable{
 	@Column(name = "sintoma")
 	private String sintoma;
 	
+	@Column(name = "sugestao")
+	private String sugestao;
+	
 	@ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                 CascadeType.PERSIST,
@@ -60,9 +63,13 @@ public class Sintoma implements Serializable{
 		this.prontuarios = prontuarios;
 	}
 
-	
-	
-	
+	public String getSugestao() {
+		return sugestao;
+	}
+
+	public void setSugestao(String sugestao) {
+		this.sugestao = sugestao;
+	}
 }
 
 	
